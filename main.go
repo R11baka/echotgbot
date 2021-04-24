@@ -30,6 +30,5 @@ func main() {
 			tgBot.ProcessUpdate(u)
 		}
 		return events.APIGatewayProxyResponse{Body: "ok", StatusCode: 200}, nil
-
 	})
 }
