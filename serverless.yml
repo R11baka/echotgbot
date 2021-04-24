@@ -1,0 +1,40 @@
+service: echoBot
+useDotenv: true
+configValidationMode: error
+frameworkVersion: '>=1.28.0 <2.50.0'
+
+provider:
+  region: "us-west-1"
+  lambdaHashingVersion: "20201221"
+  name: aws
+  runtime: go1.x
+  logRetentionInDays: 30
+  endpointType: regional
+  tracing:
+    apiGateway: true
+    lambda: true
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Resource: "*"
+          Action:
+            - "xray:*"
+package:
+  patterns:
+    - "bin/webhook"
+
+functions:
+  webhook:
+    handler: bin/webhook
+    timeout: 15
+    description: simple echo bot
+    memorySize: 128
+    environment:
+      BOT_TOKEN: ${env:BOT_TOKEN}
+    events:
+      - http:
+          path: /webhook
+          method: ANY
+          cors: false
+
